@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>广东基孔肯雅热风险场景分析</title>
+  <style>
+    :root{
+      --bg:#f7f7f5;
+      --panel:#ffffff;
+      --ink:#1f2328;
+      --muted:#667085;
+      --line:#d9d9d3;
+      --accent:#2f6b5f;
+      --soft:#edf3f1;
+      --warn:#8a5a44;
+      --warnbg:#faf3ef;
+      --ok:#335c67;
+      --okbg:#eef5f7;
+      --shadow:0 12px 28px rgba(16,24,40,.06);
+      --radius:18px;
+      --max:1200px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.7;
+    }
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 20px 72px;}
+    .hero{
+      background:linear-gradient(180deg, #ffffff 0%, #f5f6f2 100%);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:40px 32px 28px;
+    }
+    .eyebrow{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      background:var(--soft);
+      color:var(--accent);
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.02em;
+    }
+    h1{
+      margin:16px 0 10px;
+      font-size:clamp(30px, 4vw, 48px);
+      line-height:1.15;
+      letter-spacing:-.02em;
+    }
+    .subtitle{
+      max-width:860px;
+      color:var(--muted);
+      font-size:16px;
+      margin:0;
+    }
+    .nav{
+      margin-top:24px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .nav a{
+      text-decoration:none;
+      color:var(--ink);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:14px;
+    }
+    section{margin-top:28px;}
+    .section-title{
+      font-size:26px;
+      margin:0 0 14px;
+      letter-spacing:-.01em;
+    }
+    .section-desc{
+      color:var(--muted);
+      margin:0 0 18px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+    .card h3{
+      margin:0 0 8px;
+      font-size:18px;
+    }
+    .card p,.card li{color:#374151}
+    .card ul{margin:8px 0 0 18px; padding:0}
+    .small{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .timeline{
+      position:relative;
+      padding:8px 0;
+    }
+    .timeline::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:0;
+      bottom:0;
+      width:2px;
+      background:linear-gradient(180deg,#d6dbd8 0%, #aab8b2 100%);
+      transform:translateX(-50%);
+    }
+    .stage{
+      position:relative;
+      display:grid;
+      grid-template-columns:1fr 110px 1fr;
+      gap:18px;
+      align-items:start;
+      margin:22px 0;
+    }
+    .stage-center{
+      position:relative;
+      text-align:center;
+      padding-top:2px;
+    }
+    .dot{
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:var(--accent);
+      border:4px solid #eaf2ef;
+      margin:0 auto 10px;
+      box-shadow:0 0 0 1px rgba(47,107,95,.25);
+    }
+    .stage-tag{
+      display:inline-block;
+      font-size:12px;
+      color:var(--accent);
+      background:var(--soft);
+      border-radius:999px;
+      padding:5px 10px;
+      margin-bottom:8px;
+      font-weight:600;
+    }
+    .stage-title{
+      font-size:18px;
+      font-weight:700;
+      margin:2px 0 6px;
+      line-height:1.35;
+    }
+    .stage-time{
+      color:var(--muted);
+      font-size:13px;
+    }
+    .problem, .solution{
+      border-radius:20px;
+      padding:18px 18px 16px;
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+      background:#fff;
+    }
+    .problem{
+      background:var(--warnbg);
+      border-color:#ead8cf;
+    }
+    .solution{
+      background:var(--okbg);
+      border-color:#d7e7ec;
+    }
+    .side-title{
+      margin:0 0 8px;
+      font-size:15px;
+      font-weight:700;
+    }
+    .problem .side-title{color:var(--warn)}
+    .solution .side-title{color:var(--ok)}
+    .problem ul,.solution ul{margin:0 0 0 18px; padding:0}
+    .problem li,.solution li{margin:6px 0}
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:16px;
+    }
+    .pill{
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      background:#f1f3f5;
+      color:#475467;
+      font-size:12px;
+      margin-bottom:8px;
+    }
+    .footer-note{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+    }
+    .mosquito-inline{
+      display:inline-flex;
+      vertical-align:middle;
+      margin-left:8px;
+      transform: translateY(1px);
+    }
+    .mosquito-inline svg{
+      width:20px;
+      height:20px;
+      flex:0 0 auto;
+    }
+    .toc-float{
+      position:fixed;
+      top:110px;
+      right:20px;
+      width:220px;
+      max-height:70vh;
+      overflow:auto;
+      background:rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:12px;
+      z-index:60;
+      backdrop-filter: blur(6px);
+    }
+    .toc-title{
+      font-size:13px;
+      font-weight:800;
+      color:var(--muted);
+      margin:0 0 10px;
+    }
+    .toc-float a{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--ink);
+      background:transparent;
+      border:1px solid transparent;
+      border-radius:12px;
+      padding:8px 10px;
+      font-size:14px;
+      margin-bottom:6px;
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    .toc-float a:last-child{margin-bottom:0}
+    .toc-num{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--accent);
+      background:var(--soft);
+      border:1px solid rgba(47,107,95,.25);
+      flex:0 0 auto;
+    }
+    .toc-float a:hover{
+      background:#f3f6f5;
+      border-color:rgba(47,107,95,.22);
+    }
+    .toc-float a.active{
+      background:var(--accent);
+      color:#fff;
+      border-color:rgba(47,107,95,.35);
+    }
+    .toc-float a.active .toc-num{
+      background:rgba(255,255,255,.18);
+      color:#fff;
+      border-color:rgba(255,255,255,.35);
+    }
+    @media (max-width: 960px){
+      .toc-float{display:none;}
+      .stage{
+        grid-template-columns:1fr;
+        gap:12px;
+        padding-left:28px;
+      }
+      .timeline::before{
+        left:13px;
+        transform:none;
+      }
+      .stage-center{
+        text-align:left;
+        padding-left:0;
+      }
+      .dot{
+        margin:0 0 8px 0;
+      }
+      .grid,.summary-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1>广东基孔肯雅热风险场景分析</h1>
+      <p class="subtitle">
+        思路：第一部分交代广东的自然与城市背景，第二部分是以风险发展的时间轴，第三部分总结整体应急响应机制。
+      </p>
+      <nav class="nav">
+        <a href="#bg">1. 背景条件</a>
+        <a href="#timeline">2. 风险发展时间轴</a>
+        <a href="#summary">3. 整体应急响应机制</a>
+      </nav>
+    </header>
+
+    <aside class="toc-float" aria-label="页面目录">
+      <div class="toc-title">目录</div>
+      <a href="#bg" data-target="bg" class="active">
+        <span class="toc-num">1</span>
+        背景条件
+      </a>
+      <a href="#timeline" data-target="timeline">
+        <span class="toc-num">2</span>
+        风险时间轴
+      </a>
+      <a href="#summary" data-target="summary">
+        <span class="toc-num">3</span>
+        应急响应机制
+      </a>
+    </aside>
+
+    <section id="bg">
+      <h2 class="section-title">1. 背景：为什么广东更容易形成基孔肯雅热风险场景</h2>
+      <p class="section-desc">风险在自然条件、城市空间、人口流动和基层治理能力的的背景中就开始逐步累积。</p>
+      <div class="grid">
+        <article class="card">
+          <h3>（1）自然环境：高温、多雨、雨热同季</h3>
+          <ul>
+            <li>广东属于东亚季风区，自北向南跨中亚热带、南亚热带和热带。</li>
+            <li>降水主要集中在 4—9 月，年平均气温约 22.1℃，年平均降水量约 1798.8 毫米。</li>
+            <li>这类气候为白纹伊蚊孳生与活动提供了较长时间窗口，尤其在春夏之交到盛夏阶段，媒介风险显著上升。<span class="mosquito-inline" aria-hidden="true"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M32 7c-6 4-10 11-10 18 0 6 5 9 8 12-1 4-6 7-7 13-1 9 6 15 9 15s10-6 9-15c-1-6-6-9-7-13 3-3 8-6 8-12 0-7-4-14-10-18L32 16l0-9z" fill="rgba(47,107,95,.95)"/><path d="M16 22c-5 0-9 3-12 8 5 5 13 6 20 2-2-5-3-8-8-10z" fill="rgba(47,107,95,.55)"/><path d="M48 22c5 0 9 3 12 8-5 5-13 6-20 2 2-5 3-8 8-10z" fill="rgba(47,107,95,.55)"/><path d="M28 46c-2 6-3 9-6 14" stroke="rgba(47,107,95,.9)" stroke-width="3" stroke-linecap="round"/><path d="M36 46c2 6 3 9 6 14" stroke="rgba(47,107,95,.9)" stroke-width="3" stroke-linecap="round"/><path d="M31 35c-1 4-1 7 0 11" stroke="rgba(47,107,95,.9)" stroke-width="3" stroke-linecap="round"/></g></svg></span></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>（2）城市环境：高密度社区与复杂微环境并存</h3>
+          <ul>
+            <li>广东常住人口规模大、城镇化水平高，人口与功能高度集聚。</li>
+            <li>老旧社区、城中村、建筑工地、学校园区、市场商铺、楼宇天台与绿化带等，容易形成碎片化积水点位。</li>
+            <li>风险不只存在于“脏乱差”空间，也隐藏在治理责任分散、物业管理不均衡、流动人口频繁的日常城市环境中。</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>（3）媒介条件：白纹伊蚊密度具有明显季节峰值</h3>
+          <ul>
+            <li>广东 2018—2023 年监测显示，白纹伊蚊风险等级通常在 4—5 月快速升高，5—7 月达到峰值，9—10 月后回落。</li>
+            <li>珠三角和粤东地区风险相对更高，居民区、公园、工地等均是重要生境。</li>
+            <li>这意味着一旦输入病例落入高蚊媒窗口，局部传播的概率会明显增加。</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>（4）输入性压力：开放流动带来更高暴露概率</h3>
+          <ul>
+            <li>基孔肯雅热在全球热带和亚热带地区持续流行，广东又是外向型经济大省和人员流动枢纽。</li>
+            <li>输入病例本身并不必然导致爆发，但当其与高媒介密度、基层识别滞后和环境治理薄弱叠加时，就会触发本地传播链。</li>
+            <li>因此，广东的重点输入病例后能否尽早切断传染链路。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="timeline">
+      <h2 class="section-title">2. 基孔肯雅热风险场景发展时间轴</h2>
+      <p class="section-desc">中轴表示风险演化阶段；左侧展示这一阶段的核心问题与治理困境；右侧展示针对性措施与响应动作。</p>
+
+      <div class="timeline">
+        <div class="stage">
+          <div class="problem">
+            <div class="side-title">问题与困境</div>
+            <ul>
+              <li>境外输入病例进入广东后，早期症状与其他发热出疹类疾病容易混淆。</li>
+              <li>患者在起病初期可能尚未被快速识别，但已进入社区、工作地和交通场景。</li>
+              <li>此时风险信号分散在医疗机构、社区感知和个人活动轨迹中，尚未形成统一预警。</li>
+            </ul>
+          </div>
+          <div class="stage-center">
+            <div class="dot"></div>
+            <div class="stage-tag">阶段 A</div>
+            <div class="stage-title">开始出现</div>
+            <div class="stage-time">输入暴露期</div>
+          </div>
+          <div class="solution">
+            <div class="side-title">解决措施</div>
+            <ul>
+              <li>医疗机构提高对“发热 + 皮疹 + 关节痛”组合症状的识别敏感度。</li>
+              <li>加强旅行史、居住地、活动地信息采集，尽早识别输入性风险。</li>
+              <li>对疑似患者及时提示防蚊隔离，避免在发病初期被蚊虫再次叮咬。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="problem">
+            <div class="side-title">问题与困境</div>
+            <ul>
+              <li>病例进入高蚊媒密度社区后，风险从“个体感染”转化为“空间传播”。</li>
+              <li>天台、花坛、楼道阴角、储物间、工地容器、校园角落等形成大量隐性孳生地。</li>
+              <li>基层仍可能沿用“见病例再行动”的反应式逻辑，错过最佳窗口期。</li>
+            </ul>
+          </div>
+          <div class="stage-center">
+            <div class="dot"></div>
+            <div class="stage-tag">阶段 B</div>
+            <div class="stage-title">开始传播</div>
+            <div class="stage-time">病例与媒介耦合期</div>
+          </div>
+          <div class="solution">
+            <div class="side-title">解决措施</div>
+            <ul>
+              <li>迅速启动病例居住地与活动地周边的蚊媒调查、清积水和重点消杀。</li>
+              <li>把社区、物业、学校、工地、市场纳入同一张风险点位清单。</li>
+              <li>将“病例信息”同步转换为“空间行动”，而不是只停留在医疗处置。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="problem">
+            <div class="side-title">问题与困境</div>
+            <ul>
+              <li>发热个案开始增多，但并非所有个案都会第一时间被实验室确诊。</li>
+              <li>医疗、疾控、街道、学校和物业之间可能存在信息接口不顺和协同摩擦。</li>
+              <li>居民对基孔肯雅热认知有限，容易低估风险，家庭端防蚊灭蚊配合不足。</li>
+            </ul>
+          </div>
+          <div class="stage-center">
+            <div class="dot"></div>
+            <div class="stage-tag">阶段 C</div>
+            <div class="stage-title">局部扩散</div>
+            <div class="stage-time">社区传播形成期</div>
+          </div>
+          <div class="solution">
+            <div class="side-title">解决措施</div>
+            <ul>
+              <li>建立街道—社区—社区卫生服务中心点对点协同机制。</li>
+              <li>开展入户宣传、楼栋巡查、学校日巡视与重点场所环境整治。</li>
+              <li>通过症候监测、媒介监测和社区反馈形成多源预警，而非只等确诊数字上升。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="problem">
+            <div class="side-title">问题与困境</div>
+            <ul>
+              <li>多个街镇或城区同时报告病例，防控压力迅速增大。</li>
+              <li>基层面临人员不足、点位过多、反复整治难、公众焦虑上升等复合压力。</li>
+              <li>若缺乏统一指挥与统一口径，容易出现重复劳动、资源错配与舆情放大。</li>
+            </ul>
+          </div>
+          <div class="stage-center">
+            <div class="dot"></div>
+            <div class="stage-tag">阶段 D</div>
+            <div class="stage-title">爆发</div>
+            <div class="stage-time">多点扩散与集中应对期</div>
+          </div>
+          <div class="solution">
+            <div class="side-title">解决措施</div>
+            <ul>
+              <li>视情启动更高等级应急响应，统一部署病例管理、媒介控制、宣传动员和资源调配。</li>
+              <li>集中开展爱国卫生专项行动，发动机关、学校、社区、志愿者同步清理孳生地。</li>
+              <li>通过每日通报、重点区域攻坚、药店监测和入户排查，压缩传播链条。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="problem">
+            <div class="side-title">问题与困境</div>
+            <ul>
+              <li>即使新增病例下降，也可能存在残余传播风险和治理疲劳。</li>
+              <li>如果只把处置理解为“一轮消杀”，容易在转段后再次反弹。</li>
+              <li>真正暴露出来的是预警起点偏后、平战转换不足、社区常态治理薄弱等制度问题。</li>
+            </ul>
+          </div>
+          <div class="stage-center">
+            <div class="dot"></div>
+            <div class="stage-tag">阶段 E</div>
+            <div class="stage-title">收束与转段</div>
+            <div class="stage-time">从应急处置走向常态治理</div>
+          </div>
+          <div class="solution">
+            <div class="side-title">解决措施</div>
+            <ul>
+              <li>将防控重心从“灭一波蚊”转向“建一套机制”。</li>
+              <li>完善多源数据预警、基层清单化治理、重点场所日常巡查和公众长期健康教育。</li>
+              <li>推动从病例驱动治理转向风险驱动治理，把预警前移到异常信号阶段。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="summary">
+      <h2 class="section-title">3. 总结：基孔肯雅热风险治理的整体应急响应机制</h2>
+      <p class="section-desc">广东场景下更有效的机制，不是单一部门“治病”，而是把输入风险、媒介风险、社区环境和社会动员放进同一套响应链条。</p>
+      <div class="summary-grid">
+        <article class="card">
+          <span class="pill">01 预警前移</span>
+          <h3>把起点放在“异常信号”</h3>
+          <p>当输入风险、症候异常、蚊媒指数升高、社区投诉增多等信号叠加时，就应进入预警状态，而不是等病例集中爆发后再全面行动。</p>
+        </article>
+        <article class="card">
+          <span class="pill">02 医防协同</span>
+          <h3>病例发现与媒介围堵同步</h3>
+          <p>医疗机构识别病例，疾控研判风险，街道和社区迅速转入环境治理和宣传动员，形成“发现—研判—围堵—反馈”的闭环。</p>
+        </article>
+        <article class="card">
+          <span class="pill">03 空间治理</span>
+          <h3>把社区当作主战场</h3>
+          <p>风险最终落在楼宇、庭院、天台、校园、工地、市场和商铺。治理要把这些具体空间都纳入清单管理和责任链条。</p>
+        </article>
+        <article class="card">
+          <span class="pill">04 社会动员</span>
+          <h3>公众不是旁观者</h3>
+          <p>家庭清积水、个人防蚊、学校日巡视、物业协同消杀、商户环境整治，都是防控链条不可替代的组成部分。</p>
+        </article>
+        <article class="card">
+          <span class="pill">05 统一指挥</span>
+          <h3>跨部门联动要可触发、可执行</h3>
+          <p>重点不只是“开会协调”，而是形成明确规则：何时升级、谁先行动、哪些场所优先、如何共享信息、如何评估效果。</p>
+        </article>
+        <article class="card">
+          <span class="pill">06 长效治理</span>
+          <h3>从应急到常态</h3>
+          <p>把爱国卫生运动、重点场所巡查、蚊媒监测和公众教育制度化，才能把一次疫情处置转化为长期治理能力提升。</p>
+        </article>
+      </div>
+      <p class="footer-note">
+        本页适合用于课堂展示、读书汇报或案例研讨，也可进一步加入地图、图标、阶段动画或本地疫情数据模块。
+      </p>
+    </section>
+  </div>
+  <script>
+    (function () {
+      var sectionIds = ["bg", "timeline", "summary"];
+      var links = sectionIds
+        .map(function (id) { return document.querySelector('.toc-float a[data-target="' + id + '"]'); })
+        .filter(Boolean);
+
+      function updateActive() {
+        var threshold = 130;
+        var activeId = sectionIds[0];
+        for (var i = 0; i < sectionIds.length; i++) {
+          var id = sectionIds[i];
+          var el = document.getElementById(id);
+          if (!el) continue;
+          var rect = el.getBoundingClientRect();
+          if (rect.top - threshold <= 0 && rect.bottom > threshold) {
+            activeId = id;
+            break;
+          }
+        }
+        links.forEach(function (a) {
+          a.classList.toggle("active", a.dataset.target === activeId);
+        });
+      }
+
+      window.addEventListener("scroll", updateActive, { passive: true });
+      window.addEventListener("resize", updateActive);
+      document.addEventListener("DOMContentLoaded", updateActive);
+      updateActive();
+    })();
+  </script>
+</body>
+</html>
